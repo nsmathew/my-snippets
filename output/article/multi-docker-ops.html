@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="stylesheet" href="/_assets/main.css" />
+
+    <title>multi - docker ops - snippets</title>
+  <link rel="stylesheet" href="/_markdown_plugin_assets/highlight.js/atom-one-light.css" /></head>
+  <body>
+    <div class="main">
+      <nav class="navigation">
+        <a href="/">snippets</a>
+      </nav>
+      <article>
+        <header>
+          <h1 class="article-title">multi - docker ops</h1>
+          <div class="article-info">
+            <div>
+              <span
+                >Created At：<time datetime="1696970498264"
+                  >2023-10-10 21:41</time
+                ></span
+              >
+              <span
+                >Updated At：<time datetime="1696970916145"
+                  >2023-10-10 21:48</time
+                ></span
+              >
+            </div>
+            
+            <div>
+              Keywords: 
+              <span class="keyword">bash</span>
+              
+              <span class="keyword">yaml</span>
+              
+            </div>
+            
+          </div>
+        </header>
+        <div class="article-content markdown-body"><h1 id="docker-composeyml-sample-1">docker-compose.yml sample 1</h1>
+<p>bind mount volume, ports, network definition, static IP</p>
+<div><pre class="hljs"><code><span class="hljs-attr">version:</span> <span class="hljs-string">'3.3'</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">adgaurdhome:</span>
+        <span class="hljs-attr">container_name:</span> <span class="hljs-string">adguardhome</span>
+        <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span>
+        <span class="hljs-attr">volumes:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'/var/www/adgaurd/work:/opt/adguardhome/work'</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'/var/www/adgaurd/conf:/opt/adguardhome/conf'</span>
+        <span class="hljs-attr">ports:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'192.168.1.16:53:53/tcp'</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'192.168.1.16:53:53/udp'</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'8081:8080'</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">adguard/adguardhome</span>
+        <span class="hljs-attr">networks:</span>
+            <span class="hljs-attr">dns_net:</span>
+                <span class="hljs-attr">ipv4_address:</span> <span class="hljs-number">172.11</span><span class="hljs-number">.0</span><span class="hljs-number">.14</span>
+
+<span class="hljs-attr">networks:</span>
+  <span class="hljs-attr">dns_net:</span>
+    <span class="hljs-attr">ipam:</span>
+      <span class="hljs-attr">driver:</span> <span class="hljs-string">default</span>
+      <span class="hljs-attr">config:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">subnet:</span> <span class="hljs-string">"172.11.0.0/24"</span></code></pre></div>
+<hr />
+<hr />
+<h1 id="docker-composeyml-sample-2">docker-compose.yml sample 2</h1>
+<p>volume mounts, multiple services, depends on, env file, pre-existing network</p>
+<div><pre class="hljs"><code><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">db:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">mariadb</span>
+    <span class="hljs-attr">container_name:</span> <span class="hljs-string">nextcloud-mariadb</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">db:/var/lib/mysql</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/etc/localtime:/etc/localtime:ro</span>
+    <span class="hljs-attr">env_file:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">maria.env</span>
+    <span class="hljs-attr">command:</span> <span class="hljs-comment"># CLI arguments</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">"--innodb_read_only_compressed=OFF"</span>
+    <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span>
+
+  <span class="hljs-attr">app:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nextcloud:latest</span>
+    <span class="hljs-attr">container_name:</span> <span class="hljs-string">nextcloud-app</span>
+    <span class="hljs-attr">depends_on:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">db</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/www/nextcloud/html:/var/www/html</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/www/nextcloud/html/config:/var/www/html/config</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/www/nextcloud/html/custom_apps:/var/www/html/custom_apps</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/srv/dev-disk-by-uuid-0253319a-75a3-4f47-8cf7-d821e7876b42/nc:/var/www/html/data</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/srv/dev-disk-by-uuid-0253319a-75a3-4f47-8cf7-d821e7876b42/data:/var/extdat</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/www/nextcloud/html/themes:/var/www/html/themes</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/etc/localtime:/etc/localtime:ro</span>
+    <span class="hljs-attr">env_file:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">nc.env</span>
+    <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span>
+
+<span class="hljs-attr">volumes:</span>
+  <span class="hljs-attr">db:</span>
+
+<span class="hljs-attr">networks:</span>
+  <span class="hljs-attr">default:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">proxymanager_default</span></code></pre></div>
+<h2 id="sample-env-file">Sample env file</h2>
+<div><pre class="hljs"><code><span class="hljs-attr">COMPOSE_PROJECT_NAME</span>=nextcloud
+<span class="hljs-attr">MYSQL_ROOT_PASSWORD</span>=kkklklkkk
+<span class="hljs-attr">MYSQL_PASSWORD</span>=hjhjjjhhj
+<span class="hljs-attr">MYSQL_DATABASE</span>=nextclouddb
+<span class="hljs-attr">MYSQL_USER</span>=rattlehead
+<span class="hljs-attr">PUID</span>=<span class="hljs-number">1001</span>
+<span class="hljs-attr">PGID</span>=<span class="hljs-number">1001</span></code></pre></div>
+<hr />
+<hr />
+<h1 id="docker-containers-shell">docker container's shell</h1>
+<p>login to the container's shell, execute a command in the container's shell</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#Login to the container's shell using interactive mode</span>
+docker <span class="hljs-built_in">exec</span> -it diun /bin/sh
+
+<span class="hljs-comment">#Execute a command in the container, hence non interactive</span>
+docker <span class="hljs-built_in">exec</span> diun wget --quiet -O /dev/null <span class="hljs-string">"http://penang.local:3001/api/push/PTNSQOsCtG?msg=OK&amp;ping=50"</span></code></pre></div>
+<ul>
+<li><code>-it</code> - Interactive</li>
+<li>For an interactive login you can mention the preferred shell instead of /bin/sh as long as that shell is available in the container.</li>
+</ul>
+<hr />
+<hr />
+<h1 id="docker-listing-and-inspecting">docker listing and inspecting</h1>
+<p>docker container and image listing and inspecting</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#List all containers</span>
+docker container list
+
+<span class="hljs-comment">#List all images</span>
+docker image list
+
+<span class="hljs-comment">#List all volumes</span>
+docker volume list
+
+<span class="hljs-comment">#List all networks</span>
+docker network list
+
+<span class="hljs-comment">#Inspect 1 container</span>
+docker container inspect [container_name|container_id]
+
+<span class="hljs-comment">#Inspect all containers</span>
+docker container list --all --format <span class="hljs-string">"table {{.ID}}"</span> |  tail -n +2 | xargs -L1 docker container inspect &gt;&gt; <span class="hljs-variable">$dlog</span>
+
+<span class="hljs-comment">#Inspect 1 image</span>
+docker container inspect [image_id]
+
+<span class="hljs-comment">#Inspect all images</span>
+docker image list --format <span class="hljs-string">"table {{.ID}}"</span> | tail -n +2 | xargs -L1 docker image inspect</code></pre></div>
+<hr />
+<hr />
+<h1 id="docker-start-stop-restart">docker start stop restart</h1>
+<p>start stop and restart for docker from command line</p>
+<div><pre class="hljs"><code>docker start syncthing
+
+docker stop syncthing
+
+docker restart syncthing</code></pre></div>
+<h2 id="start">Start</h2>
+<p>docker start [OPTIONS] CONTAINER [CONTAINER...]</p>
+<p>Name, shorthand | Default | Description</p>
+<ul>
+<li>--attach , -a | | Attach STDOUT/STDERR and forward signals</li>
+<li>--checkpoint | | experimental (daemon) Restore from this checkpoint</li>
+<li>--checkpoint-dir | | experimental (daemon) Use a custom checkpoint storage directory</li>
+<li>--detach-keys | | Override the key sequence for detaching a container</li>
+<li>--interactive , -i | | Attach container's STDIN</li>
+</ul>
+<h2 id="stop">Stop</h2>
+<p>docker stop [OPTIONS] CONTAINER [CONTAINER...]</p>
+<p>Name, shorthand | Default | Description</p>
+<ul>
+<li>--time , -t | 10 | Seconds to wait for stop before killing it</li>
+</ul>
+<h2 id="restart">Restart</h2>
+<p>docker restart [OPTIONS] CONTAINER [CONTAINER...]</p>
+<p>Name, shorthand | Default | Description<br />
+-- --time , -t | 10 | Seconds to wait for stop before killing the container</p>
+<hr />
+<hr />
+</div>
+      </article>
+    </div>
+  </body>
+</html>

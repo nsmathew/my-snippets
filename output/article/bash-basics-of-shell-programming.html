@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="stylesheet" href="/_assets/main.css" />
+
+    <title>bash - basics of shell programming - snippets</title>
+  <link rel="stylesheet" href="/_markdown_plugin_assets/highlight.js/atom-one-light.css" /></head>
+  <body>
+    <div class="main">
+      <nav class="navigation">
+        <a href="/">snippets</a>
+      </nav>
+      <article>
+        <header>
+          <h1 class="article-title">bash - basics of shell programming</h1>
+          <div class="article-info">
+            <div>
+              <span
+                >Created At：<time datetime="1696971379107"
+                  >2023-10-10 21:56</time
+                ></span
+              >
+              <span
+                >Updated At：<time datetime="1696971438531"
+                  >2023-10-10 21:57</time
+                ></span
+              >
+            </div>
+            
+          </div>
+        </header>
+        <div class="article-content markdown-body"><h1 id="if-else-examples">if else examples</h1>
+<p>if else, nested if, and, or, negation, file exists check, greater than, lesser than, equal to, length of variable, variable empty, file symbolic link, is directory, permissions, regular file</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#Check if file does not exist or is empty</span>
+<span class="hljs-keyword">if</span> [[ ! -f <span class="hljs-string">"<span class="hljs-variable">$ipfile</span>"</span> || ! -s <span class="hljs-string">"<span class="hljs-variable">$ipfile</span>"</span> ]]
+<span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+<span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#Check if 2 variables do not have the same value</span>
+        <span class="hljs-keyword">if</span> [[ <span class="hljs-string">"<span class="hljs-variable">$lastip</span>"</span> != <span class="hljs-string">"<span class="hljs-variable">$currip</span>"</span> ]]
+        <span class="hljs-keyword">then</span>
+                <span class="hljs-comment">#do something</span>
+        <span class="hljs-keyword">else</span>
+                <span class="hljs-comment">#do something else</span>
+        <span class="hljs-keyword">fi</span>
+        
+       <span class="hljs-comment">#Check if 2 variables have same value</span>
+        <span class="hljs-keyword">if</span> [[ <span class="hljs-string">"<span class="hljs-variable">$currip</span>"</span> == <span class="hljs-string">"<span class="hljs-variable">$trans_contip</span>"</span> ]]
+        <span class="hljs-keyword">then</span>
+                <span class="hljs-comment">#do something</span>
+        <span class="hljs-keyword">else</span>
+                <span class="hljs-comment">#do something else</span>
+        <span class="hljs-keyword">fi</span>
+<span class="hljs-keyword">fi</span>
+
+
+<span class="hljs-comment">#Check for substring match</span>
+<span class="hljs-keyword">if</span> [[ <span class="hljs-string">"<span class="hljs-variable">$duckdns_log</span>"</span> == *<span class="hljs-string">"<span class="hljs-variable">$today_is</span>"</span>* ]]
+<span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+<span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#do something else</span>
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-comment">#Check if value greater than</span>
+<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$VAR</span> -gt 10 ]]
+<span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+<span class="hljs-keyword">elif</span> [[ <span class="hljs-variable">$VAR</span> -eq 10 ]]
+<span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something else</span>
+<span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#do a lot of other things maybe</span>
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-comment">#---Nest If Else Example---</span>
+<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$VAR1</span> -ge <span class="hljs-variable">$VAR2</span> ]]
+<span class="hljs-keyword">then</span>
+  <span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$VAR1</span> -ge <span class="hljs-variable">$VAR3</span> ]]
+  <span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+  <span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#do something else</span>
+  <span class="hljs-keyword">fi</span>
+<span class="hljs-keyword">else</span>
+  <span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$VAR2</span> -ge <span class="hljs-variable">$VAR3</span> ]]
+  <span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+  <span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#do something else</span>
+  <span class="hljs-keyword">fi</span>
+<span class="hljs-keyword">fi</span></code></pre></div>
+<h3 id="test-operators">Test Operators</h3>
+<p>In Bash, the test command takes one of the following syntax forms:</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">test </span>EXPRESSION
+[ EXPRESSION ]
+[[ EXPRESSION ]]</code></pre></div>
+<p>To make the script portable, prefer using the old test [ command, which is available on all POSIX shells. The new upgraded version of the test command [[ (double brackets) is supported on most modern systems using Bash, Zsh, and Ksh as a default shell. To negate the test expression, use the logical NOT (!) operator. When comparing strings , always use single or double quotes to avoid word splitting and globbing issues.</p>
+<h3 id="most-commonly-used-operators">Most commonly used operators:</h3>
+<ul>
+<li><code>-n VAR</code> - True if the length of VAR is greater than zero.</li>
+<li><code>-z VAR</code> - True if the VAR is empty.</li>
+<li><code>STRING1 = STRING2</code> - True if <code>STRING1</code> and <code>STRING2</code> are equal.</li>
+<li><code>STRING1 != STRING2</code>- True if <code>STRING1</code> and <code>STRING2</code> are not equal.</li>
+<li><code>INTEGER1 -eq INTEGER2</code> - True if <code>INTEGER1</code> and <code>INTEGER2</code> are equal.</li>
+<li><code>INTEGER1 -gt INTEGER2</code> - True if <code>INTEGER1</code> is greater than <code>INTEGER2</code>.</li>
+<li><code>INTEGER1 -lt INTEGER2</code> - True if <code>INTEGER1</code> is less than <code>INTEGER2</code>.</li>
+<li><code>INTEGER1 -ge INTEGER2</code> - True if <code>INTEGER1</code> is equal or greater than <code>INTEGER2</code>.</li>
+<li><code>INTEGER1 -le INTEGER2</code> - True if <code>INTEGER1</code> is equal or less than <code>INTEGER2</code>.</li>
+<li><code>-h FILE</code> - True if the <code>FILE</code> exists and is a symbolic link.</li>
+<li><code>-r FILE</code> - True if the <code>FILE</code> exists and is readable.</li>
+<li><code>-w FILE</code>- True if the <code>FILE</code> exists and is writable.</li>
+<li><code>-x FILE</code> - True if the <code>FILE</code> exists and is executable.</li>
+<li><code>-d FILE</code> - True if the <code>FILE</code> exists and is a directory.</li>
+<li><code>-e FILE</code> - True if the <code>FILE</code> exists and is a file, regardless of type (node, directory, socket, etc.).</li>
+<li><code>-f FILE</code> - True if the <code>FILE</code> exists and is a regular file (not a directory or device).</li>
+</ul>
+<h3 id="if-statement">if Statement</h3>
+<p>Bash if conditionals can have different forms. The most basic if statement takes the following form:</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">if</span> <span class="hljs-keyword">TEST</span>-<span class="hljs-keyword">COMMAND</span>
+then
+  STATEMENTS
+fi</code></pre></div>
+<h3 id="ifelse-statement">if..else Statement</h3>
+<p>The Bash if..else statement takes the following form:</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">if</span> <span class="hljs-keyword">TEST</span>-<span class="hljs-keyword">COMMAND</span>
+then
+  STATEMENTS1
+<span class="hljs-keyword">else</span>
+  STATEMENTS2
+fi</code></pre></div>
+<h1 id="ifelifelse-statement">if..elif..else Statement</h1>
+<p>The Bash if..elif..else statement takes the following form:</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">if</span> TEST-COMMAND1
+<span class="hljs-keyword">then</span>
+  STATEMENTS1
+<span class="hljs-keyword">elif</span> TEST-COMMAND2
+<span class="hljs-keyword">then</span>
+  STATEMENTS2
+<span class="hljs-keyword">else</span>
+  STATEMENTS3
+<span class="hljs-keyword">fi</span></code></pre></div>
+</div>
+      </article>
+    </div>
+  </body>
+</html>

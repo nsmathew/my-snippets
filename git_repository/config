@@ -1,0 +1,14 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+
+[remote "github"]
+	fetch = +refs/heads/*:refs/remotes/github/*
+	url = https://github.com/nsmathew/my-snippets.git
+[user]
+	email = nitn_mathew2000@hotmail.com
+	name = nsmathew

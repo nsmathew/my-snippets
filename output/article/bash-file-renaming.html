@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="stylesheet" href="/_assets/main.css" />
+
+    <title>bash - file renaming - snippets</title>
+  <link rel="stylesheet" href="/_markdown_plugin_assets/highlight.js/atom-one-light.css" /></head>
+  <body>
+    <div class="main">
+      <nav class="navigation">
+        <a href="/">snippets</a>
+      </nav>
+      <article>
+        <header>
+          <h1 class="article-title">bash - file renaming</h1>
+          <div class="article-info">
+            <div>
+              <span
+                >Created At：<time datetime="1696969400015"
+                  >2023-10-10 21:23</time
+                ></span
+              >
+              <span
+                >Updated At：<time datetime="1696969698912"
+                  >2023-10-10 21:28</time
+                ></span
+              >
+            </div>
+            
+            <div>
+              Keywords: 
+              <span class="keyword">bash</span>
+              
+            </div>
+            
+          </div>
+        </header>
+        <div class="article-content markdown-body"><h1 id="bulk-renaming-of-files">Bulk renaming of files</h1>
+<div><pre class="hljs"><code><span class="hljs-comment">#Replace all occurences of dot except the last one(extension)</span>
+<span class="hljs-comment"># Episode.S01E01.STREAM.mkv -&gt; Episode S01E01 STREAM.mkv</span>
+rename -n <span class="hljs-string">'s/\.[^.]+$(*SKIP)(*F)|\./\ /g'</span> *
+
+<span class="hljs-comment">#Replace part of the text with empty string</span>
+<span class="hljs-comment"># Episode S01E01 720p BluRay AAC5 1.mkv -&gt; Episode S01E01.mkv</span>
+rename -n <span class="hljs-string">'s/\ 720p\ BluRay\ AAC5\ 1//'</span> *
+
+<span class="hljs-comment">#Retain part of the matched string, in this case the number, it is enclosed in () and </span>
+<span class="hljs-comment">#referenced with $1</span>
+<span class="hljs-comment"># Episode S01E01-The Event.mkv -&gt; Episode S01E01 - The Event.mkv</span>
+rename -n <span class="hljs-string">'s/([0-9])-/$1 - /'</span> *
+
+<span class="hljs-comment">#Replace all characters from last space</span>
+<span class="hljs-comment">#My Guide for CLI a98jdjmmv.md  -&gt; My Guide for CLI.md</span>
+rename -n <span class="hljs-string">'s/\s+\S*$/.md/g'</span> *.md
+
+<span class="hljs-comment">#Generic command for rename. Does not retain episode name if exists.</span>
+<span class="hljs-comment">#Use the enhanced version</span>
+<span class="hljs-comment">#The.Title.S05E10.1080p.5.1Ch.BluRay.ReEnc-ABC.mkv -&gt; Episode S05E10.mkv</span>
+rename -n <span class="hljs-string">'s/[a-zA-Z\.]*(S[0-9][0-9]E[0-9][0-9])[0-9a-zA-Z\.\-]*(\.mkv|\.srt)/Episode $1$2/g'</span> *
+<span class="hljs-comment">#Minor variation</span>
+<span class="hljs-comment">#Modern.Family.S05.E01.1080p.Bluray.AAC.5.1.x265-LION[UTR].mkv -&gt; Episode S05E01.mkv</span>
+rename -n <span class="hljs-string">'s/[a-zA-Z\.]*(S[0-9][0-9])\.(E[0-9][0-9])[0-9a-zA-Z\.\-\[\]]*(\.mkv|\.srt)/Episode $1$2$3/g'</span> *
+ 
+<span class="hljs-comment">#Enhanced Generic command for rename. Does not retain episode name if exists</span>
+<span class="hljs-comment">#rename(The Middle (2009) - S06E19.mkv, Episode S06E19.mkv)</span>
+<span class="hljs-comment">#rename(The Middle (2009) - s06e19 - Siblings and Sombreros (1080p AMZN WEB-DL x265 RCVR).mkv, Episode S06E19.mkv)</span>
+<span class="hljs-comment">#rename(The Middle (2009) - S06E19 - Siblings and Sombreros (1080p AMZN WEB-DL x265 RCVR).mkv, Episode S06E19.mkv)</span>
+<span class="hljs-comment">#rename(The.Title.S05E10.1080p.5.1Ch.BluRay.ReEnc-ABC.mkv, Episode S05E10.mkv)</span>
+<span class="hljs-comment">#rename(Modern.Family.S06E01.720p.The.Long.Honeymoon.Web-DL.[KoTuWa].English.srt, Episode S06E01.srt)</span>
+rename -n <span class="hljs-string">'s/[a-zA-Z0-9.() \-]*[Ss]([0-9][0-9])[Ee]([0-9][0-9])[a-zA-Z0-9.() \-\[\]]*(\.mkv|\.srt|\.mp4)/Episode S$1E$2$3/g'</span> *</code></pre></div>
+<p><strong>Square Brackets</strong><br />
+Square brackets ([ ]) designate a character class and match a single character in the string. Inside a character class, only the character class metacharacters (backslash, circumflex anchor and hyphen) have special meaning.</p>
+<p>You must use a backslash when you use character class metacharacters as literals inside a character class only. Square brackets that are used as literals must always be escaped with backslash, both inside and outside a character class.</p>
+<p>For example, [[abc] should be written: [[abc]</p>
+<ul>
+<li>\ (backslash) - general escape character</li>
+<li>^ (circumflex anchor) - negate the class, if this is the first character in the brackets (If ^ is not the first, it is not a metacharacter.)</li>
+</ul>
+</div>
+      </article>
+    </div>
+  </body>
+</html>

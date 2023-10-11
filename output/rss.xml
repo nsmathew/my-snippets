@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title></title>
+        <link>undefined</link>
+        <description>undefined</description>
+        <lastBuildDate>Wed, 11 Oct 2023 12:18:30 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>Joplin Pages Publisher</generator>
+        <item>
+            <title><![CDATA[bash - python ops]]></title>
+            <guid>81d56bd4825b456dab58ed5ddd4893b6</guid>
+            <pubDate>Tue, 10 Oct 2023 20:58:29 GMT</pubDate>
+            <content:encoded><![CDATA[<h1 id="create-and-activate-a-python-virtual-env">Create and activate a python virtual env</h1>
+<p>Create and activate a python virtual environment</p>
+<div><pre class="hljs"><code><span class="hljs-comment"># Create the virtual env</span>
+python3 -m venv .venv
+
+<span class="hljs-comment"># Activate the virtual env</span>
+source .venv<span class="hljs-regexp">/bin/</span>activate</code></pre></div>
+<hr />
+<hr />
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[bash - basics of shell programming]]></title>
+            <guid>b7f82c7854334f3ab50670fb7f01aa52</guid>
+            <pubDate>Tue, 10 Oct 2023 20:56:19 GMT</pubDate>
+            <content:encoded><![CDATA[<h1 id="if-else-examples">if else examples</h1>
+<p>if else, nested if, and, or, negation, file exists check, greater than, lesser than, equal to, length of variable, variable empty, file symbolic link, is directory, permissions, regular file</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#Check if file does not exist or is empty</span>
+<span class="hljs-keyword">if</span> [[ ! -f <span class="hljs-string">"<span class="hljs-variable">$ipfile</span>"</span> || ! -s <span class="hljs-string">"<span class="hljs-variable">$ipfile</span>"</span> ]]
+<span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+<span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#Check if 2 variables do not have the same value</span>
+        <span class="hljs-keyword">if</span> [[ <span class="hljs-string">"<span class="hljs-variable">$lastip</span>"</span> != <span class="hljs-string">"<span class="hljs-variable">$currip</span>"</span> ]]
+        <span class="hljs-keyword">then</span>
+                <span class="hljs-comment">#do something</span>
+        <span class="hljs-keyword">else</span>
+                <span class="hljs-comment">#do something else</span>
+        <span class="hljs-keyword">fi</span>
+        
+       <span class="hljs-comment">#Check if 2 variables have same value</span>
+        <span class="hljs-keyword">if</span> [[ <span class="hljs-string">"<span class="hljs-variable">$currip</span>"</span> == <span class="hljs-string">"<span class="hljs-variable">$trans_contip</span>"</span> ]]
+        <span class="hljs-keyword">then</span>
+                <span class="hljs-comment">#do something</span>
+        <span class="hljs-keyword">else</span>
+                <span class="hljs-comment">#do something else</span>
+        <span class="hljs-keyword">fi</span>
+<span class="hljs-keyword">fi</span>
+
+
+<span class="hljs-comment">#Check for substring match</span>
+<span class="hljs-keyword">if</span> [[ <span class="hljs-string">"<span class="hljs-variable">$duckdns_log</span>"</span> == *<span class="hljs-string">"<span class="hljs-variable">$today_is</span>"</span>* ]]
+<span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+<span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#do something else</span>
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-comment">#Check if value greater than</span>
+<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$VAR</span> -gt 10 ]]
+<span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+<span class="hljs-keyword">elif</span> [[ <span class="hljs-variable">$VAR</span> -eq 10 ]]
+<span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something else</span>
+<span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#do a lot of other things maybe</span>
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-comment">#---Nest If Else Example---</span>
+<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$VAR1</span> -ge <span class="hljs-variable">$VAR2</span> ]]
+<span class="hljs-keyword">then</span>
+  <span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$VAR1</span> -ge <span class="hljs-variable">$VAR3</span> ]]
+  <span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+  <span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#do something else</span>
+  <span class="hljs-keyword">fi</span>
+<span class="hljs-keyword">else</span>
+  <span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$VAR2</span> -ge <span class="hljs-variable">$VAR3</span> ]]
+  <span class="hljs-keyword">then</span>
+        <span class="hljs-comment">#do something</span>
+  <span class="hljs-keyword">else</span>
+        <span class="hljs-comment">#do something else</span>
+  <span class="hljs-keyword">fi</span>
+<span class="hljs-keyword">fi</span></code></pre></div>
+<h3 id="test-operators">Test Operators</h3>
+<p>In Bash, the test command takes one of the following syntax forms:</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">test </span>EXPRESSION
+[ EXPRESSION ]
+[[ EXPRESSION ]]</code></pre></div>
+<p>To make the script portable, prefer using the old test [ command, which is available on all POSIX shells. The new upgraded version of the test command [[ (double brackets) is supported on most modern systems using Bash, Zsh, and Ksh as a default shell. To negate the test expression, use the logical NOT (!) operator. When comparing strings , always use single or double quotes to avoid word splitting and globbing issues.</p>
+<h3 id="most-commonly-used-operators">Most commonly used operators:</h3>
+<ul>
+<li><code>-n VAR</code> - True if the length of VAR is greater than zero.</li>
+<li><code>-z VAR</code> - True if the VAR is empty.</li>
+<li><code>STRING1 = STRING2</code> - True if <code>STRING1</code> and <code>STRING2</code> are equal.</li>
+<li><code>STRING1 != STRING2</code>- True if <code>STRING1</code> and <code>STRING2</code> are not equal.</li>
+<li><code>INTEGER1 -eq INTEGER2</code> - True if <code>INTEGER1</code> and <code>INTEGER2</code> are equal.</li>
+<li><code>INTEGER1 -gt INTEGER2</code> - True if <code>INTEGER1</code> is greater than <code>INTEGER2</code>.</li>
+<li><code>INTEGER1 -lt INTEGER2</code> - True if <code>INTEGER1</code> is less than <code>INTEGER2</code>.</li>
+<li><code>INTEGER1 -ge INTEGER2</code> - True if <code>INTEGER1</code> is equal or greater than <code>INTEGER2</code>.</li>
+<li><code>INTEGER1 -le INTEGER2</code> - True if <code>INTEGER1</code> is equal or less than <code>INTEGER2</code>.</li>
+<li><code>-h FILE</code> - True if the <code>FILE</code> exists and is a symbolic link.</li>
+<li><code>-r FILE</code> - True if the <code>FILE</code> exists and is readable.</li>
+<li><code>-w FILE</code>- True if the <code>FILE</code> exists and is writable.</li>
+<li><code>-x FILE</code> - True if the <code>FILE</code> exists and is executable.</li>
+<li><code>-d FILE</code> - True if the <code>FILE</code> exists and is a directory.</li>
+<li><code>-e FILE</code> - True if the <code>FILE</code> exists and is a file, regardless of type (node, directory, socket, etc.).</li>
+<li><code>-f FILE</code> - True if the <code>FILE</code> exists and is a regular file (not a directory or device).</li>
+</ul>
+<h3 id="if-statement">if Statement</h3>
+<p>Bash if conditionals can have different forms. The most basic if statement takes the following form:</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">if</span> <span class="hljs-keyword">TEST</span>-<span class="hljs-keyword">COMMAND</span>
+then
+  STATEMENTS
+fi</code></pre></div>
+<h3 id="ifelse-statement">if..else Statement</h3>
+<p>The Bash if..else statement takes the following form:</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">if</span> <span class="hljs-keyword">TEST</span>-<span class="hljs-keyword">COMMAND</span>
+then
+  STATEMENTS1
+<span class="hljs-keyword">else</span>
+  STATEMENTS2
+fi</code></pre></div>
+<h1 id="ifelifelse-statement">if..elif..else Statement</h1>
+<p>The Bash if..elif..else statement takes the following form:</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">if</span> TEST-COMMAND1
+<span class="hljs-keyword">then</span>
+  STATEMENTS1
+<span class="hljs-keyword">elif</span> TEST-COMMAND2
+<span class="hljs-keyword">then</span>
+  STATEMENTS2
+<span class="hljs-keyword">else</span>
+  STATEMENTS3
+<span class="hljs-keyword">fi</span></code></pre></div>
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[bash - networking]]></title>
+            <guid>37284525a30c4ade87e1ee459eccd496</guid>
+            <pubDate>Tue, 10 Oct 2023 20:53:48 GMT</pubDate>
+            <content:encoded><![CDATA[<h1 id="get-external-ip-from-command-line">get external IP from command line</h1>
+<p>external ip from linux command line using curl</p>
+<div><pre class="hljs"><code><span class="hljs-symbol">curl</span> ipinfo.io/<span class="hljs-built_in">ip</span></code></pre></div>
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[bash - file ops]]></title>
+            <guid>affaeb867d0d4ab3b2337535882076a9</guid>
+            <pubDate>Tue, 10 Oct 2023 20:49:18 GMT</pubDate>
+            <content:encoded><![CDATA[<h1 id="set-and-clear-special-permissions-in-linux">Set and clear special permissions in linux</h1>
+<p>Set and clear special permissions in linux for User, Group and Others</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#Clear Sticky Bit for User and Group recursievly and assign  permissions of 774 - rwx rwx r-x</span>
+chmod -R 00775 syncthing/
+
+<span class="hljs-comment">#Set stickybit for user</span>
+chmod 2770 community_content/</code></pre></div>
+<p>Linux permissions are a concept that every user becomes intimately familiar with early on in their development. We need to execute scripts, modify files, and run processes in order to administer systems effectively, but what happens when we see <em>Permission denied</em>? Do you know why we see this message? If you know the cause of the problem, do you know how to implement the solution?</p>
+<p>I will give a quick explanation of the various ways to calculate permissions, and then we will focus on the special permissions within Linux. If you want an in-depth look at the <code>chmod</code> command, check out this article from Sudoer Shashank Hegde, <ins class="jop-noMdConv">Linux permissions: An introduction to chmod</ins>.</p>
+<p>The <ins class="jop-noMdConv">TL;DR</ins> is that there are two main ways of assigning permissions.</p>
+<h4 id="symbolic-method">Symbolic method</h4>
+<p>The symbolic method uses the following syntax:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> ~]<span class="hljs-variable">$ </span>chmod WhoWhatWhich file | directory</code></pre></div>
+<p>Where:</p>
+<ul>
+<li><strong>Who</strong> - represents identities: u,g,o,a (user, group, other, all)</li>
+<li><strong>What</strong> - represents actions: +, -, = (add, remove, set exact)</li>
+<li><strong>Which</strong> - represents access levels: r, w, x (read, write, execute)</li>
+</ul>
+<p>An example of this is if I want to <em>add</em> the <em>read</em> and <em>write</em> permissions to a file named <em>test.txt</em> for <em>user</em> and <em>group</em>, I use the following command:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> ~]<span class="hljs-variable">$ </span>chmod ug+rw test.txt</code></pre></div>
+<p>Full disclosure, this is not my preferred method of assigning permissions, and if you would like more information around this method, I recommend your nearest search engine.</p>
+<h4 id="numeric-method">Numeric method</h4>
+<p>The numeric method is, in my experience, the best way to learn and practice permissions. It is based on the following syntax:</p>
+<div><pre class="hljs"><code>[tcarrigan@server ~]$ chmod ### file | directory</code></pre></div>
+<p>Here, from left to right, the character <strong>#</strong> represents an access level. There are three access levels—user, group, and others. To determine what each digit is, we use the following:</p>
+<ul>
+<li>Start at 0</li>
+<li>If the <em>read</em> permission should be set, add <strong>4</strong></li>
+<li>If the <em>write</em> permission should be set, add <strong>2</strong></li>
+<li>If the <em>execute</em> permission should be set, add <strong>1</strong></li>
+</ul>
+<p>This is calculated on a per access level basis. Let's interpret this permissions example:</p>
+<div><pre class="hljs"><code>-rw-r-x<span class="hljs-comment">---</span></code></pre></div>
+<p>The permissions are represented as <strong>650</strong>. How did I arrive at those numbers?</p>
+<ul>
+<li>The user's permissions are: <strong>rw-</strong> or 4+2=<strong>6</strong></li>
+<li>The group's permissions are: <strong>r-x</strong> or 4+1=<strong>5</strong></li>
+<li>The others's permissions are: <strong>---</strong> or <strong>0</strong></li>
+</ul>
+<p>To put this into the command syntax, it looks like this:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> ~]<span class="hljs-variable">$ </span>chmod <span class="hljs-number">650</span> test.txt</code></pre></div>
+<p>Now that you understand the basics of permission calculation in Linux, let's look at the <em>special permissions</em> included in the OS.</p>
+<p><em><strong>[ You might also like: <ins class="jop-noMdConv">An introduction to Linux Access Control Lists (ACLs)</ins> ]</strong></em></p>
+<h2 id="special-permission-explained">Special permission explained</h2>
+<p>Special permissions make up a fourth access level in addition to <strong>user</strong>, <strong>group</strong>, and <strong>other</strong>. Special permissions allow for additional privileges over the standard permission sets (as the name suggests). There is a special permission option for each access level discussed previously. Let's take a look at each one individually, beginning with Set UID:</p>
+<h2 id="user-s-pecial">user + s (pecial)</h2>
+<p>Commonly noted as <strong>SUID</strong>, the special permission for the user access level has a single function: A file with <strong>SUID</strong> always executes as the user who owns the file, regardless of the user passing the command. If the file owner doesn't have execute permissions, then use an uppercase <strong>S</strong> here.</p>
+<p>Now, to see this in a practical light, let's look at the <code>/usr/bin/passwd</code> command. This command, by default, has the SUID permission set:</p>
+<div><pre class="hljs"><code>[tcarrigan@server ~]$ ls -l <span class="hljs-regexp">/usr/</span>bin/passwd 
+-rwsr-xr-x. <span class="hljs-number">1</span> root root <span class="hljs-number">33544</span> Dec <span class="hljs-number">13</span>  <span class="hljs-number">2019</span> <span class="hljs-regexp">/usr/</span>bin/passwd</code></pre></div>
+<p>Note the <strong>s</strong> where <strong>x</strong> would usually indicate execute permissions for the user.</p>
+<h2 id="group-s-pecial">group + s (pecial)</h2>
+<p>Commonly noted as <strong>SGID</strong>, this special permission has a couple of functions:</p>
+<ul>
+<li>If set on a file, it allows the file to be executed as the <strong>group</strong> that owns the file (similar to SUID)</li>
+<li>If set on a directory, any files created in the directory will have their <strong>group</strong> ownership set to that of the directory owner</li>
+</ul>
+<div><pre class="hljs"><code>[tcarrigan@server article_submissions]$ ls -l 
+total 0
+drwxrws---.<span class="hljs-number"> 2 </span>tcarrigan tcarrigan<span class="hljs-number"> 69 </span>Apr<span class="hljs-number"> 7 </span>11:31 my_articles</code></pre></div>
+<p>This permission set is noted by a lowercase <strong>s</strong> where the <strong>x</strong> would normally indicate <strong>execute</strong> privileges for the <strong>group</strong>. It is also especially useful for directories that are often used in collaborative efforts between members of a group. Any member of the group can access any new file. This applies to the execution of files, as well. <strong>SGID</strong> is very powerful when utilized properly.</p>
+<p>As noted previously for <strong>SUID</strong>, if the owning group does not have execute permissions, then an uppercase <strong>S</strong> is used.</p>
+<h2 id="other-t-sticky">other + t (sticky)</h2>
+<p>The last special permission has been dubbed the "sticky bit." This permission does not affect individual files. However, at the directory level, it restricts file deletion. Only the <strong>owner</strong> (and <strong>root</strong>) of a file can remove the file within that directory. A common example of this is the <code>/tmp</code> directory:</p>
+<div><pre class="hljs"><code>[tcarrigan@server article_submissions]$ ls -ld <span class="hljs-regexp">/tmp/</span>
+drwxrwxrwt. <span class="hljs-number">15</span> root root <span class="hljs-number">4096</span> Sep <span class="hljs-number">22</span> <span class="hljs-number">15</span>:<span class="hljs-number">28</span> <span class="hljs-regexp">/tmp/</span></code></pre></div>
+<p>The permission set is noted by the lowercase <strong>t</strong>, where the <strong>x</strong> would normally indicate the execute privilege.</p>
+<h2 id="setting-special-permissions">Setting special permissions</h2>
+<p>To set special permissions on a file or directory, you can utilize either of the two methods outlined for standard permissions above: Symbolic or numerical.</p>
+<p>Let's assume that we want to set <strong>SGID</strong> on the directory <code>community_content</code>.</p>
+<p>To do this using the symbolic method, we do the following:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> article_submissions]<span class="hljs-variable">$ </span>chmod g+s community_content/</code></pre></div>
+<p>Using the numerical method, we need to pass a fourth, preceding digit in our <code>chmod</code> command. The digit used is calculated similarly to the standard permission digits:</p>
+<ul>
+<li>Start at 0</li>
+<li>SUID = 4</li>
+<li>SGID = 2</li>
+<li>Sticky = 1</li>
+</ul>
+<p>The syntax is:</p>
+<div><pre class="hljs"><code>[tcarrigan@server ~]$ chmod X### file | directory</code></pre></div>
+<p>Where <strong>X</strong> is the special permissions digit.</p>
+<p>Here is the command to set <strong>SGID</strong> on <code>community_content</code> using the numerical method:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> article_submissions]<span class="hljs-variable">$ </span>chmod <span class="hljs-number">2770</span> community_content/
+[tcarrigan<span class="hljs-variable">@server</span> article_submissions]<span class="hljs-variable">$ </span>ls -ld community_content/
+drwxrws---. <span class="hljs-number">2</span> tcarrigan tcarrigan <span class="hljs-number">113</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">11</span>:<span class="hljs-number">32</span> community_content/</code></pre></div>
+<p><em><strong>[ Free download: <ins class="jop-noMdConv">Advanced Linux commands cheat sheet.</ins> ]</strong></em></p>
+<h2 id="summary">Summary</h2>
+<p>In closing, permissions are fundamentally important to being an effective Linux administrator. There are two defined ways to set permissions using the <code>chmod</code> command: Symbolic and numerical. We examined the syntax and calculations required for both methods. We also considered the special permissions and their role in the system. Now that you understand permissions and the underlying concepts, you can solve the ever-annoying <em>Permission denied</em> error when it tries to impede your work.</p>
+<hr />
+<hr />
+<h1 id="file-diff-in-command-line">file diff in command line</h1>
+<p>file diff in command line with a side by side view</p>
+<div><pre class="hljs"><code>diff -y left_file right_file</code></pre></div>
+<ul>
+<li>-y shows a side-by-side view of the 2 files</li>
+</ul>
+<hr />
+<hr />
+<h1 id="add-a-line-to-top-of-the-file">Add a line to top of the file</h1>
+<p>Add a line to top of the file, terminates with a new line</p>
+<div><pre class="hljs"><code>sed -i <span class="hljs-string">'1s/^/tags:: #nas_accs\n/'</span> admin.md</code></pre></div>
+<ul>
+<li>-i in place substitution, the file(s) get updated</li>
+</ul>
+<hr />
+<hr />
+<h1 id="change-permissions-for-files-and-folders-separately">change permissions for files and folders separately</h1>
+<div><pre class="hljs"><code>find /path -<span class="hljs-built_in">type</span> f -print0 | xargs -0 chmod g+rw
+
+find /path -<span class="hljs-built_in">type</span> d -print0 | xargs -0 chmod g+rwx</code></pre></div>
+<hr />
+<hr />
+<h1 id="convert-file-encoding">convert file encoding</h1>
+<p>convert file encoding format</p>
+<div><pre class="hljs"><code><span class="hljs-attribute">convmv</span> -f utf-<span class="hljs-number">8</span> -t utf-<span class="hljs-number">8</span> -r --notest --nfc &lt;nextcloud-data-folder&gt;</code></pre></div>
+<ul>
+<li><code>-f</code> - specify the current encoding of the filename(s) from which should be converted</li>
+<li><code>-t</code> - specify the encoding to which the filename(s) should be converted</li>
+<li><code>-r</code> - recursively go through directories</li>
+<li><code>--notest</code> - Needed to actually rename the files. By default convmv will just print what it wants to do.</li>
+<li><code>--nfc</code> - target files will be normalization form C for UTF-8 (Linux etc.)</li>
+</ul>
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[multi - docker ops]]></title>
+            <guid>80aec1e3ceb44174b3fc0c84ef2b7369</guid>
+            <pubDate>Tue, 10 Oct 2023 20:41:38 GMT</pubDate>
+            <content:encoded><![CDATA[<h1 id="docker-composeyml-sample-1">docker-compose.yml sample 1</h1>
+<p>bind mount volume, ports, network definition, static IP</p>
+<div><pre class="hljs"><code><span class="hljs-attr">version:</span> <span class="hljs-string">'3.3'</span>
+<span class="hljs-attr">services:</span>
+    <span class="hljs-attr">adgaurdhome:</span>
+        <span class="hljs-attr">container_name:</span> <span class="hljs-string">adguardhome</span>
+        <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span>
+        <span class="hljs-attr">volumes:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'/var/www/adgaurd/work:/opt/adguardhome/work'</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'/var/www/adgaurd/conf:/opt/adguardhome/conf'</span>
+        <span class="hljs-attr">ports:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'192.168.1.16:53:53/tcp'</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'192.168.1.16:53:53/udp'</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">'8081:8080'</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">adguard/adguardhome</span>
+        <span class="hljs-attr">networks:</span>
+            <span class="hljs-attr">dns_net:</span>
+                <span class="hljs-attr">ipv4_address:</span> <span class="hljs-number">172.11</span><span class="hljs-number">.0</span><span class="hljs-number">.14</span>
+
+<span class="hljs-attr">networks:</span>
+  <span class="hljs-attr">dns_net:</span>
+    <span class="hljs-attr">ipam:</span>
+      <span class="hljs-attr">driver:</span> <span class="hljs-string">default</span>
+      <span class="hljs-attr">config:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">subnet:</span> <span class="hljs-string">"172.11.0.0/24"</span></code></pre></div>
+<hr />
+<hr />
+<h1 id="docker-composeyml-sample-2">docker-compose.yml sample 2</h1>
+<p>volume mounts, multiple services, depends on, env file, pre-existing network</p>
+<div><pre class="hljs"><code><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">db:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">mariadb</span>
+    <span class="hljs-attr">container_name:</span> <span class="hljs-string">nextcloud-mariadb</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">db:/var/lib/mysql</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/etc/localtime:/etc/localtime:ro</span>
+    <span class="hljs-attr">env_file:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">maria.env</span>
+    <span class="hljs-attr">command:</span> <span class="hljs-comment"># CLI arguments</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">"--innodb_read_only_compressed=OFF"</span>
+    <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span>
+
+  <span class="hljs-attr">app:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nextcloud:latest</span>
+    <span class="hljs-attr">container_name:</span> <span class="hljs-string">nextcloud-app</span>
+    <span class="hljs-attr">depends_on:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">db</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/www/nextcloud/html:/var/www/html</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/www/nextcloud/html/config:/var/www/html/config</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/www/nextcloud/html/custom_apps:/var/www/html/custom_apps</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/srv/dev-disk-by-uuid-0253319a-75a3-4f47-8cf7-d821e7876b42/nc:/var/www/html/data</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/srv/dev-disk-by-uuid-0253319a-75a3-4f47-8cf7-d821e7876b42/data:/var/extdat</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/www/nextcloud/html/themes:/var/www/html/themes</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/etc/localtime:/etc/localtime:ro</span>
+    <span class="hljs-attr">env_file:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">nc.env</span>
+    <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span>
+
+<span class="hljs-attr">volumes:</span>
+  <span class="hljs-attr">db:</span>
+
+<span class="hljs-attr">networks:</span>
+  <span class="hljs-attr">default:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">proxymanager_default</span></code></pre></div>
+<h2 id="sample-env-file">Sample env file</h2>
+<div><pre class="hljs"><code><span class="hljs-attr">COMPOSE_PROJECT_NAME</span>=nextcloud
+<span class="hljs-attr">MYSQL_ROOT_PASSWORD</span>=kkklklkkk
+<span class="hljs-attr">MYSQL_PASSWORD</span>=hjhjjjhhj
+<span class="hljs-attr">MYSQL_DATABASE</span>=nextclouddb
+<span class="hljs-attr">MYSQL_USER</span>=rattlehead
+<span class="hljs-attr">PUID</span>=<span class="hljs-number">1001</span>
+<span class="hljs-attr">PGID</span>=<span class="hljs-number">1001</span></code></pre></div>
+<hr />
+<hr />
+<h1 id="docker-containers-shell">docker container's shell</h1>
+<p>login to the container's shell, execute a command in the container's shell</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#Login to the container's shell using interactive mode</span>
+docker <span class="hljs-built_in">exec</span> -it diun /bin/sh
+
+<span class="hljs-comment">#Execute a command in the container, hence non interactive</span>
+docker <span class="hljs-built_in">exec</span> diun wget --quiet -O /dev/null <span class="hljs-string">"http://penang.local:3001/api/push/PTNSQOsCtG?msg=OK&amp;ping=50"</span></code></pre></div>
+<ul>
+<li><code>-it</code> - Interactive</li>
+<li>For an interactive login you can mention the preferred shell instead of /bin/sh as long as that shell is available in the container.</li>
+</ul>
+<hr />
+<hr />
+<h1 id="docker-listing-and-inspecting">docker listing and inspecting</h1>
+<p>docker container and image listing and inspecting</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#List all containers</span>
+docker container list
+
+<span class="hljs-comment">#List all images</span>
+docker image list
+
+<span class="hljs-comment">#List all volumes</span>
+docker volume list
+
+<span class="hljs-comment">#List all networks</span>
+docker network list
+
+<span class="hljs-comment">#Inspect 1 container</span>
+docker container inspect [container_name|container_id]
+
+<span class="hljs-comment">#Inspect all containers</span>
+docker container list --all --format <span class="hljs-string">"table {{.ID}}"</span> |  tail -n +2 | xargs -L1 docker container inspect &gt;&gt; <span class="hljs-variable">$dlog</span>
+
+<span class="hljs-comment">#Inspect 1 image</span>
+docker container inspect [image_id]
+
+<span class="hljs-comment">#Inspect all images</span>
+docker image list --format <span class="hljs-string">"table {{.ID}}"</span> | tail -n +2 | xargs -L1 docker image inspect</code></pre></div>
+<hr />
+<hr />
+<h1 id="docker-start-stop-restart">docker start stop restart</h1>
+<p>start stop and restart for docker from command line</p>
+<div><pre class="hljs"><code>docker start syncthing
+
+docker stop syncthing
+
+docker restart syncthing</code></pre></div>
+<h2 id="start">Start</h2>
+<p>docker start [OPTIONS] CONTAINER [CONTAINER...]</p>
+<p>Name, shorthand | Default | Description</p>
+<ul>
+<li>--attach , -a | | Attach STDOUT/STDERR and forward signals</li>
+<li>--checkpoint | | experimental (daemon) Restore from this checkpoint</li>
+<li>--checkpoint-dir | | experimental (daemon) Use a custom checkpoint storage directory</li>
+<li>--detach-keys | | Override the key sequence for detaching a container</li>
+<li>--interactive , -i | | Attach container's STDIN</li>
+</ul>
+<h2 id="stop">Stop</h2>
+<p>docker stop [OPTIONS] CONTAINER [CONTAINER...]</p>
+<p>Name, shorthand | Default | Description</p>
+<ul>
+<li>--time , -t | 10 | Seconds to wait for stop before killing it</li>
+</ul>
+<h2 id="restart">Restart</h2>
+<p>docker restart [OPTIONS] CONTAINER [CONTAINER...]</p>
+<p>Name, shorthand | Default | Description<br />
+-- --time , -t | 10 | Seconds to wait for stop before killing the container</p>
+<hr />
+<hr />
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[bash - search, replace and filter]]></title>
+            <guid>30de8a2ca97d4407895a46083b9948ca</guid>
+            <pubDate>Tue, 10 Oct 2023 20:26:45 GMT</pubDate>
+            <content:encoded><![CDATA[<h1 id="search-inside-files-for-a-specific-pattern">search inside files for a specific pattern</h1>
+<div><pre class="hljs"><code><span class="hljs-comment">#Search all files in the path for the 'pattern', as whole word</span>
+grep -rnw <span class="hljs-string">'/path/to/somewhere/'</span> -e <span class="hljs-string">'pattern'</span>
+
+<span class="hljs-comment">#Search all files in the path for the 'pattern' without whole word</span>
+grep -rn <span class="hljs-string">'/path/to/somewhere/'</span> -e <span class="hljs-string">'pattern'</span>
+
+<span class="hljs-comment">#This will only search through those files which have .c or .h extensions:</span>
+grep --include=\*.{c,h} -rnw <span class="hljs-string">'/path/to/somewhere/'</span> -e <span class="hljs-string">"pattern"</span>
+
+<span class="hljs-comment">#This will exclude searching all the files ending with .o extension:</span>
+grep --exclude=\*.o -rnw <span class="hljs-string">'/path/to/somewhere/'</span> -e <span class="hljs-string">"pattern"</span>
+
+<span class="hljs-comment">#For directories it's possible to exclude one or more directories using the -exclude-dir parameter. For example, this will exclude the dirs dir1/, dir2/ and all of them matching *.dst/:</span>
+grep --exclude-dir={dir1,dir2,*.dst} -rnw <span class="hljs-string">'/path/to/somewhere/'</span> -e <span class="hljs-string">"pattern"</span></code></pre></div>
+<ul>
+<li><code>r or R</code> is recursive,</li>
+<li><code>n</code> is line number, and</li>
+<li><code>w</code> stands for match the whole word.</li>
+<li><code>l</code> (lower-case L) can be added to just give the file name of matching files.</li>
+<li><code>e</code> is the pattern used during the search Along with these, --exclude, --include, --exclude-dir flags could be used for efficient searching.</li>
+</ul>
+<hr />
+<hr />
+<h1 id="searchfind-and-print-file-name-along-with-contents">search/find and print file name along with contents</h1>
+<p>search for file matching a pattern and output each filename followed by its contents</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#Fixed string search</span>
+find . -name <span class="hljs-string">'11-08-2021_*.log'</span> -<span class="hljs-built_in">print</span> -<span class="hljs-built_in">exec</span> cat {} \;
+
+<span class="hljs-comment">#Search using variable. Note the double quotes which allow the variable to expland</span>
+find . -name <span class="hljs-string">"<span class="hljs-variable">${SEARCHSTR}</span>_*.log"</span> -<span class="hljs-built_in">print</span> -<span class="hljs-built_in">exec</span> cat {} \;
+
+<span class="hljs-comment">#Alternate implementation using tail with dynamic determination of patten being today's date</span>
+tail -n +1 `date +<span class="hljs-string">"%m-%d-%Y"</span>`_*.<span class="hljs-built_in">log</span></code></pre></div>
+<ul>
+<li>For every result found from the find command the file name is printed with a new line followed by the file contents being printed by cat</li>
+<li>The alternate implementation is simpler but includes a prefix and suffix for every filename, ex: = =&gt; 11-08-2021_DOCKINFO.log &lt;==</li>
+</ul>
+<hr />
+<hr />
+<h1 id="sed-view-specific-lines-from-a-file">sed view specific lines from a file</h1>
+<p>view ranges of lines from files, view lines matching a pattern</p>
+<div><pre class="hljs"><code><span class="hljs-comment"># 1. Viewing a range of lines of a document</span>
+sed -n <span class="hljs-string">'5,10p'</span> myfile.txt
+
+<span class="hljs-comment"># 2. Viewing the entire file except a given range</span>
+sed <span class="hljs-string">'20,35d'</span> myfile.txt
+
+<span class="hljs-comment"># 3. Viewing non-consecutive lines and ranges</span>
+sed -n -e <span class="hljs-string">'5,7p'</span> -e <span class="hljs-string">'10,13p'</span> myfile.txt
+
+<span class="hljs-comment"># 4. Viewing lines containing with a given pattern</span>
+sed -n <span class="hljs-string">'/^Jul  1/ p'</span> /var/<span class="hljs-built_in">log</span>/secure</code></pre></div>
+<p>Referenced from <a title="https://www.tecmint.com/linux-sed-command-tips-tricks/" href="https://www.tecmint.com/linux-sed-command-tips-tricks/">https://www.tecmint.com/linux-sed-command-tips-tricks/</a></p>
+<ol>
+<li>
+<p>Viewing a range of lines of a document<br />
+Tools such as head and tail allow us to view the bottom or the top of a file. What if we need to view a section in the middle? The following sed one-liner will return lines 5 through 10 from myfile.txt:</p>
+</li>
+<li>
+<p>Viewing the entire file except a given range<br />
+On the other hand, it’s possible that you want to print the entire file except a certain range. To exclude lines 20 through 35 from myfile.txt, do:</p>
+</li>
+<li>
+<p>Viewing non-consecutive lines and ranges<br />
+It’s possible that you’re interested in set of non-consecutive lines, or in more than one range. Let’s display lines 5-7 and 10-13 from myfile.txt:</p>
+</li>
+<li>
+<p>Viewing lines containing with a given pattern<br />
+Another use of sed consists in printing the lines from a file that match a given regular expression. For example, we may be interested in viewing the authorization and authentication activities that took place on July 2, as per the /var/log/secure log in a CentOS 7 server.</p>
+</li>
+</ol>
+<p>In this case, the pattern to search for is Jul 2 at the beginning of each line:</p>
+<hr />
+<hr />
+<h1 id="sed-substitution">sed substitution</h1>
+<p>replace words and characters with or without a range, with regular expressions, inserting spaces, dos2unix formatting, in-place edit and backup, switch word pairs, 2 or more substitutions</p>
+<div><pre class="hljs"><code><span class="hljs-comment"># 1. Replacing words or characters (basic substitution)</span>
+<span class="hljs-comment"># 1.1</span>
+sed <span class="hljs-string">'s/version/story/g'</span> myfile.txt
+
+<span class="hljs-comment">#1.2</span>
+sed <span class="hljs-string">'s/version/story/gi'</span> myfile.txt
+
+<span class="hljs-comment">#1.3</span>
+ip route show | sed <span class="hljs-string">'s/  */ /g'</span>
+
+<span class="hljs-comment"># 2. Replacing words or characters inside a range</span>
+sed <span class="hljs-string">'30,40 s/version/story/g'</span> myfile.txt
+
+<span class="hljs-comment"># 3. Using regular expressions (advanced substitution) – I</span>
+sed <span class="hljs-string">'/^#\|^$\| *#/d'</span> httpd.conf
+
+<span class="hljs-comment"># 4. Using regular expressions (advanced substitution) – II</span>
+sed <span class="hljs-string">'s/[Zz]ip/rar/g'</span> myfile.txt
+
+<span class="hljs-comment"># 5. Inserting spaces in files</span>
+<span class="hljs-comment">#5.1</span>
+sed G myfile.txt
+<span class="hljs-comment">#5.2 </span>
+sed <span class="hljs-string">'G;G'</span> myfile.txt
+
+<span class="hljs-comment"># 6. Emulating dos2unix with inline editing</span>
+sed -i <span class="hljs-string">'s/\r//'</span> myfile.txt
+
+<span class="hljs-comment"># 7. In-place editing and backing up original file</span>
+sed -i<span class="hljs-string">'.orig'</span> <span class="hljs-string">'s/this/that/gi'</span> myfile.txt
+
+<span class="hljs-comment"># 8. Switching pairs of words</span>
+sed <span class="hljs-string">'s/^\(.*\),\(.*\)$/\, /g'</span> names.txt
+
+<span class="hljs-comment"># 9. Replacing words only if a separate match is found</span>
+sed <span class="hljs-string">'/services/ s/start/stop/g'</span> msg.txt
+
+<span class="hljs-comment">#10. Performing two or more substitutions at once</span>
+sed -i <span class="hljs-string">'s/that/this/gi;s/line/verse/gi'</span> myfile.txt
+
+<span class="hljs-comment"># 11. Combining sed and other commands</span>
+ip route show | sed -n <span class="hljs-string">'/src/p'</span> | sed -e <span class="hljs-string">'s/  */ /g'</span> | cut -d<span class="hljs-string">' '</span> -f9</code></pre></div>
+<p>Referenced from <a title="https://www.tecmint.com/linux-sed-command-tips-tricks/" href="https://www.tecmint.com/linux-sed-command-tips-tricks/">https://www.tecmint.com/linux-sed-command-tips-tricks/</a></p>
+<ol>
+<li>
+<p><strong>Replacing words or characters (basic substitution)</strong><br />
+1.1 To replace every instance of the word version with story in myfile.txt, do.<br />
+1.2 Additionally, you may want to consider using gi instead of g in order to ignore character case.<br />
+1.3 To replace multiple blank spaces with a single space, we will use the output of ip route show and a pipeline.</p>
+</li>
+<li>
+<p><strong>Replacing words or characters inside a range</strong><br />
+If you’re interested in replacing words only within a line range (30 through 40, for example), you can do. Of course, you can indicate a single line through its corresponding number instead of a range.</p>
+</li>
+<li>
+<p><strong>Using regular expressions (advanced substitution) – I</strong><br />
+Sometimes configuration files are loaded with comments. While this is certainly useful, it may be helpful to display only the configuration directives sometimes if you want to view them all at a glance. The caret sign followed by the number sign (^#) indicates the beginning of a line, whereas ^$ represents blank lines. The vertical bars indicate boolean operations, whereas the backward slash is used to escape the vertical bars.<br />
+In this particular case, the Apache configuration file has lines with #’s not at the beginning of some lines, so *# is used to remove those as well.<br />
+To remove empty lines or those beginning with # from the Apache configuration file, do:</p>
+</li>
+<li>
+<p><strong>Using regular expressions (advanced substitution) – II</strong><br />
+To replace a word beginning with uppercase or lowercase with another word, we can also use sed. To illustrate, let’s replace the word zip or Zip with rar in myfile.txt:</p>
+</li>
+<li>
+<p><strong>Inserting spaces in files</strong><br />
+5.1 With sed, we can also insert spaces (blank lines) for each non-empty line in a file. To insert one blank line every other line in LICENSE, a plain text file, do:<br />
+5.2 Add an uppercase G separated by a semicolon if you want to add more blank lines. The following image illustrates the example outlined in this tip:</p>
+</li>
+<li>
+<p><strong>Emulating dos2unix with inline editing</strong><br />
+The dos2unix program converts plain text files from Windows/Mac formatting to Unix/Linux, removing hidden newline characters inserted by some text editors used in those platforms. If it is not installed in your Linux system, you can mimic its functionality with sed instead of installing it. Please note that the -i option indicate in-place editing. Then changes will not be returned to the screen, but will be saved to the file. You can insert DOS newline characters while editing a file in vim editor with Ctrl+V and Ctrl+M.</p>
+</li>
+<li>
+<p><strong>In-place editing and backing up original file</strong><br />
+In the previous tip we used sed to modify a file but did not save the original file. Sometimes it’s a good idea to save a backup copy of the original file just in case. To do that, indicate a suffix following the -i option (inside single quotes) to be used to rename the original file. In the following example we will replace all instances of this or This (ignoring case) with that in myfile.txt, and we will save the original file as myfile.txt.orig. Finally, we will use diff utility to identify the differences between both files:</p>
+</li>
+<li>
+<p><strong>Switching pairs of words</strong><br />
+Let’s suppose you have a file containing full names in the format First name, Last name. To adequately process the file, you may want to switch Last name and First name. We can do that with sed fairly easily.</p>
+</li>
+<li>
+<p><strong>Replacing words only if a separate match is found</strong><br />
+Sometimes replacing all instances of a given word, or a random few, is not precisely what we need. Perhaps we need to perform the replacement if a separate match is found. For example, we may want to replace start with stop only if the word services is found in the same line. In that scenario, here’s what will happen.<br />
+<code>We need to start partying at work, but let’s remember to start all services first.</code><br />
+In the first line, start will not be replaced with stop since the word services does not appear in that line, as opposed to the second line.</p>
+</li>
+<li>
+<p><strong>Performing two or more substitutions at once</strong><br />
+You can combine two or more substitutions one single sed command. Let’s replace the words that and line in myfile.txt with This and verse, respectively. Note how this can be done by using an ordinary sed substitution command followed by a semicolon and a second substitution command.</p>
+</li>
+<li>
+<p><strong>Combining sed and other commands</strong><br />
+Of course, sed can be combined with other tools in order to create more powerful commands. For example, let’s use the example given in TIP #4 and extract our IP address from the output of the ip route command. We will begin by printing only the line where the word src is. Then we will convert multiple spaces into a single one. Finally, we will cut the 9th field (considering a single space as field separator), which is where the IP address is.</p>
+</li>
+</ol>
+<h1 id="sed-to-replace-content-in-files">sed to replace content in files</h1>
+<p>replace entire lines with empty lines, replace specific strings</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#Replace all lines starting with 'Tags: ' with an empty line</span>
+sed -E <span class="hljs-string">'s/Tags: (.*)//g'</span> *.md
+
+<span class="hljs-comment">#Replace all strings 'Status: Completed' with 'Completed: y'</span>
+sed -E <span class="hljs-string">'s/Status: Complete/Completed: y/g'</span> *.md
+
+<span class="hljs-comment">#Remove the first n lines. Below example removes the first 2 lines</span>
+sed -E <span class="hljs-string">'1,2d'</span> *.md</code></pre></div>
+<ul>
+<li><code>-i</code> [SUFFIX] - edit files in place (makes backup if SUFFIX supplied), ie applies substitution in the file(s). Without this it displays the substituted file content on terminal</li>
+<li><code>-E</code> extended RegEx</li>
+</ul>
+<h1 id="find-command-with-only-file-name">find command with only file name</h1>
+<p>find command but displays only file name in the output</p>
+<div><pre class="hljs"><code>find . -<span class="hljs-built_in">type</span> f -<span class="hljs-built_in">printf</span> <span class="hljs-string">"%f\n"</span></code></pre></div>
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[bash - file renaming]]></title>
+            <guid>af70289136814b7a833b6d18e813513d</guid>
+            <pubDate>Tue, 10 Oct 2023 20:23:20 GMT</pubDate>
+            <content:encoded><![CDATA[<h1 id="bulk-renaming-of-files">Bulk renaming of files</h1>
+<div><pre class="hljs"><code><span class="hljs-comment">#Replace all occurences of dot except the last one(extension)</span>
+<span class="hljs-comment"># Episode.S01E01.STREAM.mkv -&gt; Episode S01E01 STREAM.mkv</span>
+rename -n <span class="hljs-string">'s/\.[^.]+$(*SKIP)(*F)|\./\ /g'</span> *
+
+<span class="hljs-comment">#Replace part of the text with empty string</span>
+<span class="hljs-comment"># Episode S01E01 720p BluRay AAC5 1.mkv -&gt; Episode S01E01.mkv</span>
+rename -n <span class="hljs-string">'s/\ 720p\ BluRay\ AAC5\ 1//'</span> *
+
+<span class="hljs-comment">#Retain part of the matched string, in this case the number, it is enclosed in () and </span>
+<span class="hljs-comment">#referenced with $1</span>
+<span class="hljs-comment"># Episode S01E01-The Event.mkv -&gt; Episode S01E01 - The Event.mkv</span>
+rename -n <span class="hljs-string">'s/([0-9])-/$1 - /'</span> *
+
+<span class="hljs-comment">#Replace all characters from last space</span>
+<span class="hljs-comment">#My Guide for CLI a98jdjmmv.md  -&gt; My Guide for CLI.md</span>
+rename -n <span class="hljs-string">'s/\s+\S*$/.md/g'</span> *.md
+
+<span class="hljs-comment">#Generic command for rename. Does not retain episode name if exists.</span>
+<span class="hljs-comment">#Use the enhanced version</span>
+<span class="hljs-comment">#The.Title.S05E10.1080p.5.1Ch.BluRay.ReEnc-ABC.mkv -&gt; Episode S05E10.mkv</span>
+rename -n <span class="hljs-string">'s/[a-zA-Z\.]*(S[0-9][0-9]E[0-9][0-9])[0-9a-zA-Z\.\-]*(\.mkv|\.srt)/Episode $1$2/g'</span> *
+<span class="hljs-comment">#Minor variation</span>
+<span class="hljs-comment">#Modern.Family.S05.E01.1080p.Bluray.AAC.5.1.x265-LION[UTR].mkv -&gt; Episode S05E01.mkv</span>
+rename -n <span class="hljs-string">'s/[a-zA-Z\.]*(S[0-9][0-9])\.(E[0-9][0-9])[0-9a-zA-Z\.\-\[\]]*(\.mkv|\.srt)/Episode $1$2$3/g'</span> *
+ 
+<span class="hljs-comment">#Enhanced Generic command for rename. Does not retain episode name if exists</span>
+<span class="hljs-comment">#rename(The Middle (2009) - S06E19.mkv, Episode S06E19.mkv)</span>
+<span class="hljs-comment">#rename(The Middle (2009) - s06e19 - Siblings and Sombreros (1080p AMZN WEB-DL x265 RCVR).mkv, Episode S06E19.mkv)</span>
+<span class="hljs-comment">#rename(The Middle (2009) - S06E19 - Siblings and Sombreros (1080p AMZN WEB-DL x265 RCVR).mkv, Episode S06E19.mkv)</span>
+<span class="hljs-comment">#rename(The.Title.S05E10.1080p.5.1Ch.BluRay.ReEnc-ABC.mkv, Episode S05E10.mkv)</span>
+<span class="hljs-comment">#rename(Modern.Family.S06E01.720p.The.Long.Honeymoon.Web-DL.[KoTuWa].English.srt, Episode S06E01.srt)</span>
+rename -n <span class="hljs-string">'s/[a-zA-Z0-9.() \-]*[Ss]([0-9][0-9])[Ee]([0-9][0-9])[a-zA-Z0-9.() \-\[\]]*(\.mkv|\.srt|\.mp4)/Episode S$1E$2$3/g'</span> *</code></pre></div>
+<p><strong>Square Brackets</strong><br />
+Square brackets ([ ]) designate a character class and match a single character in the string. Inside a character class, only the character class metacharacters (backslash, circumflex anchor and hyphen) have special meaning.</p>
+<p>You must use a backslash when you use character class metacharacters as literals inside a character class only. Square brackets that are used as literals must always be escaped with backslash, both inside and outside a character class.</p>
+<p>For example, [[abc] should be written: [[abc]</p>
+<ul>
+<li>\ (backslash) - general escape character</li>
+<li>^ (circumflex anchor) - negate the class, if this is the first character in the brackets (If ^ is not the first, it is not a metacharacter.)</li>
+</ul>
+]]></content:encoded>
+        </item>
+    </channel>
+</rss>

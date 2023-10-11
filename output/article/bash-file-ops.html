@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="stylesheet" href="/_assets/main.css" />
+
+    <title>bash - file ops - snippets</title>
+  <link rel="stylesheet" href="/_markdown_plugin_assets/highlight.js/atom-one-light.css" /></head>
+  <body>
+    <div class="main">
+      <nav class="navigation">
+        <a href="/">snippets</a>
+      </nav>
+      <article>
+        <header>
+          <h1 class="article-title">bash - file ops</h1>
+          <div class="article-info">
+            <div>
+              <span
+                >Created At：<time datetime="1696970958899"
+                  >2023-10-10 21:49</time
+                ></span
+              >
+              <span
+                >Updated At：<time datetime="1696971298902"
+                  >2023-10-10 21:54</time
+                ></span
+              >
+            </div>
+            
+            <div>
+              Keywords: 
+              <span class="keyword">bash</span>
+              
+            </div>
+            
+          </div>
+        </header>
+        <div class="article-content markdown-body"><h1 id="set-and-clear-special-permissions-in-linux">Set and clear special permissions in linux</h1>
+<p>Set and clear special permissions in linux for User, Group and Others</p>
+<div><pre class="hljs"><code><span class="hljs-comment">#Clear Sticky Bit for User and Group recursievly and assign  permissions of 774 - rwx rwx r-x</span>
+chmod -R 00775 syncthing/
+
+<span class="hljs-comment">#Set stickybit for user</span>
+chmod 2770 community_content/</code></pre></div>
+<p>Linux permissions are a concept that every user becomes intimately familiar with early on in their development. We need to execute scripts, modify files, and run processes in order to administer systems effectively, but what happens when we see <em>Permission denied</em>? Do you know why we see this message? If you know the cause of the problem, do you know how to implement the solution?</p>
+<p>I will give a quick explanation of the various ways to calculate permissions, and then we will focus on the special permissions within Linux. If you want an in-depth look at the <code>chmod</code> command, check out this article from Sudoer Shashank Hegde, <ins class="jop-noMdConv">Linux permissions: An introduction to chmod</ins>.</p>
+<p>The <ins class="jop-noMdConv">TL;DR</ins> is that there are two main ways of assigning permissions.</p>
+<h4 id="symbolic-method">Symbolic method</h4>
+<p>The symbolic method uses the following syntax:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> ~]<span class="hljs-variable">$ </span>chmod WhoWhatWhich file | directory</code></pre></div>
+<p>Where:</p>
+<ul>
+<li><strong>Who</strong> - represents identities: u,g,o,a (user, group, other, all)</li>
+<li><strong>What</strong> - represents actions: +, -, = (add, remove, set exact)</li>
+<li><strong>Which</strong> - represents access levels: r, w, x (read, write, execute)</li>
+</ul>
+<p>An example of this is if I want to <em>add</em> the <em>read</em> and <em>write</em> permissions to a file named <em>test.txt</em> for <em>user</em> and <em>group</em>, I use the following command:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> ~]<span class="hljs-variable">$ </span>chmod ug+rw test.txt</code></pre></div>
+<p>Full disclosure, this is not my preferred method of assigning permissions, and if you would like more information around this method, I recommend your nearest search engine.</p>
+<h4 id="numeric-method">Numeric method</h4>
+<p>The numeric method is, in my experience, the best way to learn and practice permissions. It is based on the following syntax:</p>
+<div><pre class="hljs"><code>[tcarrigan@server ~]$ chmod ### file | directory</code></pre></div>
+<p>Here, from left to right, the character <strong>#</strong> represents an access level. There are three access levels—user, group, and others. To determine what each digit is, we use the following:</p>
+<ul>
+<li>Start at 0</li>
+<li>If the <em>read</em> permission should be set, add <strong>4</strong></li>
+<li>If the <em>write</em> permission should be set, add <strong>2</strong></li>
+<li>If the <em>execute</em> permission should be set, add <strong>1</strong></li>
+</ul>
+<p>This is calculated on a per access level basis. Let's interpret this permissions example:</p>
+<div><pre class="hljs"><code>-rw-r-x<span class="hljs-comment">---</span></code></pre></div>
+<p>The permissions are represented as <strong>650</strong>. How did I arrive at those numbers?</p>
+<ul>
+<li>The user's permissions are: <strong>rw-</strong> or 4+2=<strong>6</strong></li>
+<li>The group's permissions are: <strong>r-x</strong> or 4+1=<strong>5</strong></li>
+<li>The others's permissions are: <strong>---</strong> or <strong>0</strong></li>
+</ul>
+<p>To put this into the command syntax, it looks like this:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> ~]<span class="hljs-variable">$ </span>chmod <span class="hljs-number">650</span> test.txt</code></pre></div>
+<p>Now that you understand the basics of permission calculation in Linux, let's look at the <em>special permissions</em> included in the OS.</p>
+<p><em><strong>[ You might also like: <ins class="jop-noMdConv">An introduction to Linux Access Control Lists (ACLs)</ins> ]</strong></em></p>
+<h2 id="special-permission-explained">Special permission explained</h2>
+<p>Special permissions make up a fourth access level in addition to <strong>user</strong>, <strong>group</strong>, and <strong>other</strong>. Special permissions allow for additional privileges over the standard permission sets (as the name suggests). There is a special permission option for each access level discussed previously. Let's take a look at each one individually, beginning with Set UID:</p>
+<h2 id="user-s-pecial">user + s (pecial)</h2>
+<p>Commonly noted as <strong>SUID</strong>, the special permission for the user access level has a single function: A file with <strong>SUID</strong> always executes as the user who owns the file, regardless of the user passing the command. If the file owner doesn't have execute permissions, then use an uppercase <strong>S</strong> here.</p>
+<p>Now, to see this in a practical light, let's look at the <code>/usr/bin/passwd</code> command. This command, by default, has the SUID permission set:</p>
+<div><pre class="hljs"><code>[tcarrigan@server ~]$ ls -l <span class="hljs-regexp">/usr/</span>bin/passwd 
+-rwsr-xr-x. <span class="hljs-number">1</span> root root <span class="hljs-number">33544</span> Dec <span class="hljs-number">13</span>  <span class="hljs-number">2019</span> <span class="hljs-regexp">/usr/</span>bin/passwd</code></pre></div>
+<p>Note the <strong>s</strong> where <strong>x</strong> would usually indicate execute permissions for the user.</p>
+<h2 id="group-s-pecial">group + s (pecial)</h2>
+<p>Commonly noted as <strong>SGID</strong>, this special permission has a couple of functions:</p>
+<ul>
+<li>If set on a file, it allows the file to be executed as the <strong>group</strong> that owns the file (similar to SUID)</li>
+<li>If set on a directory, any files created in the directory will have their <strong>group</strong> ownership set to that of the directory owner</li>
+</ul>
+<div><pre class="hljs"><code>[tcarrigan@server article_submissions]$ ls -l 
+total 0
+drwxrws---.<span class="hljs-number"> 2 </span>tcarrigan tcarrigan<span class="hljs-number"> 69 </span>Apr<span class="hljs-number"> 7 </span>11:31 my_articles</code></pre></div>
+<p>This permission set is noted by a lowercase <strong>s</strong> where the <strong>x</strong> would normally indicate <strong>execute</strong> privileges for the <strong>group</strong>. It is also especially useful for directories that are often used in collaborative efforts between members of a group. Any member of the group can access any new file. This applies to the execution of files, as well. <strong>SGID</strong> is very powerful when utilized properly.</p>
+<p>As noted previously for <strong>SUID</strong>, if the owning group does not have execute permissions, then an uppercase <strong>S</strong> is used.</p>
+<h2 id="other-t-sticky">other + t (sticky)</h2>
+<p>The last special permission has been dubbed the "sticky bit." This permission does not affect individual files. However, at the directory level, it restricts file deletion. Only the <strong>owner</strong> (and <strong>root</strong>) of a file can remove the file within that directory. A common example of this is the <code>/tmp</code> directory:</p>
+<div><pre class="hljs"><code>[tcarrigan@server article_submissions]$ ls -ld <span class="hljs-regexp">/tmp/</span>
+drwxrwxrwt. <span class="hljs-number">15</span> root root <span class="hljs-number">4096</span> Sep <span class="hljs-number">22</span> <span class="hljs-number">15</span>:<span class="hljs-number">28</span> <span class="hljs-regexp">/tmp/</span></code></pre></div>
+<p>The permission set is noted by the lowercase <strong>t</strong>, where the <strong>x</strong> would normally indicate the execute privilege.</p>
+<h2 id="setting-special-permissions">Setting special permissions</h2>
+<p>To set special permissions on a file or directory, you can utilize either of the two methods outlined for standard permissions above: Symbolic or numerical.</p>
+<p>Let's assume that we want to set <strong>SGID</strong> on the directory <code>community_content</code>.</p>
+<p>To do this using the symbolic method, we do the following:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> article_submissions]<span class="hljs-variable">$ </span>chmod g+s community_content/</code></pre></div>
+<p>Using the numerical method, we need to pass a fourth, preceding digit in our <code>chmod</code> command. The digit used is calculated similarly to the standard permission digits:</p>
+<ul>
+<li>Start at 0</li>
+<li>SUID = 4</li>
+<li>SGID = 2</li>
+<li>Sticky = 1</li>
+</ul>
+<p>The syntax is:</p>
+<div><pre class="hljs"><code>[tcarrigan@server ~]$ chmod X### file | directory</code></pre></div>
+<p>Where <strong>X</strong> is the special permissions digit.</p>
+<p>Here is the command to set <strong>SGID</strong> on <code>community_content</code> using the numerical method:</p>
+<div><pre class="hljs"><code>[tcarrigan<span class="hljs-variable">@server</span> article_submissions]<span class="hljs-variable">$ </span>chmod <span class="hljs-number">2770</span> community_content/
+[tcarrigan<span class="hljs-variable">@server</span> article_submissions]<span class="hljs-variable">$ </span>ls -ld community_content/
+drwxrws---. <span class="hljs-number">2</span> tcarrigan tcarrigan <span class="hljs-number">113</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">11</span>:<span class="hljs-number">32</span> community_content/</code></pre></div>
+<p><em><strong>[ Free download: <ins class="jop-noMdConv">Advanced Linux commands cheat sheet.</ins> ]</strong></em></p>
+<h2 id="summary">Summary</h2>
+<p>In closing, permissions are fundamentally important to being an effective Linux administrator. There are two defined ways to set permissions using the <code>chmod</code> command: Symbolic and numerical. We examined the syntax and calculations required for both methods. We also considered the special permissions and their role in the system. Now that you understand permissions and the underlying concepts, you can solve the ever-annoying <em>Permission denied</em> error when it tries to impede your work.</p>
+<hr />
+<hr />
+<h1 id="file-diff-in-command-line">file diff in command line</h1>
+<p>file diff in command line with a side by side view</p>
+<div><pre class="hljs"><code>diff -y left_file right_file</code></pre></div>
+<ul>
+<li>-y shows a side-by-side view of the 2 files</li>
+</ul>
+<hr />
+<hr />
+<h1 id="add-a-line-to-top-of-the-file">Add a line to top of the file</h1>
+<p>Add a line to top of the file, terminates with a new line</p>
+<div><pre class="hljs"><code>sed -i <span class="hljs-string">'1s/^/tags:: #nas_accs\n/'</span> admin.md</code></pre></div>
+<ul>
+<li>-i in place substitution, the file(s) get updated</li>
+</ul>
+<hr />
+<hr />
+<h1 id="change-permissions-for-files-and-folders-separately">change permissions for files and folders separately</h1>
+<div><pre class="hljs"><code>find /path -<span class="hljs-built_in">type</span> f -print0 | xargs -0 chmod g+rw
+
+find /path -<span class="hljs-built_in">type</span> d -print0 | xargs -0 chmod g+rwx</code></pre></div>
+<hr />
+<hr />
+<h1 id="convert-file-encoding">convert file encoding</h1>
+<p>convert file encoding format</p>
+<div><pre class="hljs"><code><span class="hljs-attribute">convmv</span> -f utf-<span class="hljs-number">8</span> -t utf-<span class="hljs-number">8</span> -r --notest --nfc &lt;nextcloud-data-folder&gt;</code></pre></div>
+<ul>
+<li><code>-f</code> - specify the current encoding of the filename(s) from which should be converted</li>
+<li><code>-t</code> - specify the encoding to which the filename(s) should be converted</li>
+<li><code>-r</code> - recursively go through directories</li>
+<li><code>--notest</code> - Needed to actually rename the files. By default convmv will just print what it wants to do.</li>
+<li><code>--nfc</code> - target files will be normalization form C for UTF-8 (Linux etc.)</li>
+</ul>
+</div>
+      </article>
+    </div>
+  </body>
+</html>
